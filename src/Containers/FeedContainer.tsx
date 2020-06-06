@@ -3,20 +3,20 @@ import FeedItem from 'Components/FeedItem';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { avatarSrc } from 'Constants';
+
 const data = [
   {
     title: 'Feed Item 1',
     user: {
-      avatar:
-        'https://www.biography.com/.image/t_share/MTE4MDAzNDEwNzg5ODI4MTEw/barack-obama-12782369-1-402.jpg',
+      avatar: avatarSrc,
     },
     slug: 'feed-item-1',
   },
   {
     title: 'Feed Item 1',
     user: {
-      avatar:
-        'https://www.biography.com/.image/t_share/MTE4MDAzNDEwNzg5ODI4MTEw/barack-obama-12782369-1-402.jpg',
+      avatar: avatarSrc,
     },
     slug: 'feed-item-2',
   },
