@@ -3,13 +3,17 @@ import { useForm } from 'react-hook-form';
 import { Form, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 
+interface Props {
+  onSubmit: Function;
+}
+
 const ErrorContainer = styled.div`
   color: red;
 `;
 
-const LoginForm = () => {
+const LoginForm = (props: Props) => {
   const { handleSubmit, register, errors } = useForm();
-  const onSubmit = (values: any) => console.log(values);
+  const onSubmit = (values: any) => props.onSubmit(values); // (values: any) => console.log(values);
 
   return (
     <>

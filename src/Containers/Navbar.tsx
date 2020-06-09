@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, FormControl, Button, Form } from 'react-bootstrap';
+import { Navbar, Nav, Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,6 +9,10 @@ const ButtonContainer = styled.div`
   margin-left: 20px;
 `;
 
+const NavLink = styled(Link)`
+  padding: 10px;
+`;
+
 class CustomNavbar extends Component {
   state = {};
   render() {
@@ -16,12 +20,8 @@ class CustomNavbar extends Component {
       <Navbar bg='light' variant='light'>
         <Navbar.Brand href='#home'>Navbar</Navbar.Brand>
         <Nav className='mr-auto'>
-          <Nav.Link>
-            <Link to={routes.home}>Home</Link>
-          </Nav.Link>
-          <Nav.Link>
-            <Link to={routes.feed}>Feed</Link>
-          </Nav.Link>
+          <NavLink to={routes.home}>Home</NavLink>
+          <NavLink to={routes.feed}>Feed</NavLink>
         </Nav>
         <Form inline>
           <ButtonContainer>
