@@ -11,8 +11,6 @@ const LoginForm = () => {
   const { handleSubmit, register, errors } = useForm();
   const onSubmit = (values: any) => console.log(values);
 
-  console.log(errors);
-
   return (
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -47,7 +45,7 @@ const LoginForm = () => {
         </ErrorContainer>
 
         <Button variant='primary' type='submit'>
-          Submit
+          Login
         </Button>
       </Form>
     </>

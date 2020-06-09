@@ -1,34 +1,61 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Form, Button } from 'react-bootstrap';
+import styled from 'styled-components';
+
+const ErrorContainer = styled.div`
+  color: red;
+`;
 
 const SignupForm = () => {
   const { handleSubmit, register, errors } = useForm();
   const onSubmit = (values: any) => console.log(values);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        name='email'
-        ref={register({
-          required: 'Required',
-          pattern: {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-            message: 'invalid email address',
-          },
-        })}
-      />
-      {errors.email && errors.email.message}
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form.Group controlId='formBasicEmail'>
+        <Form.Label>Enter username</Form.Label>
+        <Form.Control
+          type='email'
+          placeholder='Enter email'
+          name='email'
+          ref={register({
+            required: 'Required',
+          })}
+        />
+      </Form.Group>
 
-      <input
-        name='username'
-        ref={register({
-          validate: (value) => value !== 'admin' || 'Nice try!',
-        })}
-      />
-      {errors.username && errors.username.message}
+      <ErrorContainer>{errors.email && errors.email.message}</ErrorContainer>
 
-      <button type='submit'>Submit</button>
-    </form>
+      <Form.Group controlId='formBasicPassword'>
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type='password'
+          placeholder='Password'
+          name='password'
+          ref={register({
+            required: 'Required',
+          })}
+        />
+        <Form.Label>Confirm Password</Form.Label>
+        <Form.Control
+          type='password'
+          placeholder='Password'
+          name='password'
+          ref={register({
+            required: 'Required',
+          })}
+        />
+      </Form.Group>
+
+      <ErrorContainer>
+        {errors.password && errors.password.message}
+      </ErrorContainer>
+
+      <Button variant='primary' type='submit'>
+        Signup
+      </Button>
+    </Form>
   );
 };
 export default SignupForm;

@@ -8,14 +8,14 @@ interface Props {
   onClick: () => void;
 }
 const Container = styled.div`
-  padding: 5px;
+  padding: 10px;
   display: flex;
   justify-content: flex-stretch;
   align-items: center;
   cursor: pointer;
-  width: 50%;
+  width: 30%;
   margin: auto;
-  margin-top: 30px;
+  margin-top: 40px;
   border: solid 2px white;
   border-radius: 10px;
   &:hover {

@@ -13,6 +13,7 @@ class LoginContainer extends Component {
   render() {
     return (
       <Container>
+        <h1>Login</h1>
         <LoginForm />
       </Container>
     );

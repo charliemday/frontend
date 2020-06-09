@@ -34,6 +34,8 @@ const AvatarContainer = styled.div`
   margin: auto;
 `;
 
+const ItemDetailContainer = styled.div``;
+
 interface Props {}
 
 interface State {
@@ -61,21 +63,23 @@ class ItemContainer extends Component<Props, State> {
         <AvatarContainer>
           <Avatar src={avatarSrc} />
         </AvatarContainer>
-        {data.map((item, key) => (
-          <ItemDetail
-            key={key}
-            from={item.from}
-            to={item.to}
-            currency={item.currency}
-            onClick={() =>
-              this.setState({
-                showModal: true,
-                title: item.title,
-                description: item.description,
-              })
-            }
-          />
-        ))}
+        <ItemDetailContainer>
+          {data.map((item, key) => (
+            <ItemDetail
+              key={key}
+              from={item.from}
+              to={item.to}
+              currency={item.currency}
+              onClick={() =>
+                this.setState({
+                  showModal: true,
+                  title: item.title,
+                  description: item.description,
+                })
+              }
+            />
+          ))}
+        </ItemDetailContainer>
       </Container>
     );
   }

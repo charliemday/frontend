@@ -23,8 +23,10 @@ const data = [
 ];
 
 const Container = styled.div`
-  padding: 20px;
-  border: solid 2px black;
+  padding: 100px;
+  padding-top: 100px;
+  margin: auto;
+  width: 60%;
 `;
 
 class FeedContainer extends Component<RouteComponentProps> {

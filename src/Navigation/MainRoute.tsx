@@ -19,8 +19,8 @@ class MainRoute extends Component {
         <Switch>
           <Route path={routes.login} component={LoginContainer} />
           <Route path={routes.feed} component={FeedContainer} />
-          <Route path={routes.item} component={ItemContainer} />
           <Route path={routes.signup} component={SignupContainer} />
+          <Route exact path={routes.item} component={ItemContainer} />
         </Switch>
       </Router>
     );
