@@ -6,8 +6,10 @@ import { combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { resettableReducer } from 'reduxsauce';
 import { createBrowserHistory } from 'history';
+import createSagaMiddleware from 'redux-saga';
 
 import ImmutablePersistenceTransform from 'Services/ImmutablePersistanceTransform';
+import rootSagas from 'Sagas';
 
 export const history = createBrowserHistory();
 
@@ -33,13 +35,19 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export default function configureStore() {
   const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const sagaMiddleware = createSagaMiddleware();
   const store = createStore(
     persistedReducer,
     composeEnhancers(
-      applyMiddleware(routerMiddleware(history), thunkMiddleware)
+      applyMiddleware(
+        routerMiddleware(history),
+        thunkMiddleware,
+        sagaMiddleware
+      )
     )
   );
   let persistor = persistStore(store);
+  sagaMiddleware.run(rootSagas, history);
   return { store, persistor };
 }
 

@@ -13,7 +13,7 @@ const ErrorContainer = styled.div`
 
 const LoginForm = (props: Props) => {
   const { handleSubmit, register, errors } = useForm();
-  const onSubmit = (values: any) => props.onSubmit(values); // (values: any) => console.log(values);
+  const onSubmit = (values: any) => props.onSubmit(values);
 
   return (
     <>
@@ -21,9 +21,8 @@ const LoginForm = (props: Props) => {
         <Form.Group controlId='formBasicEmail'>
           <Form.Label>Email address</Form.Label>
           <Form.Control
-            type='email'
-            placeholder='Enter email'
-            name='email'
+            placeholder='Enter username'
+            name='username'
             ref={register({
               required: 'Required',
             })}

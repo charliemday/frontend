@@ -20,10 +20,10 @@ const createCustomTypes = (prefix, types) => {
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  ...createCustomActions('login', ['resolve'], ['payload'], ['error']),
+  ...createCustomActions('login', ['data'], ['payload'], ['error']),
 });
 
-export const AuthenticationsTypes = Types;
+export const AuthenticationTypes = Types;
 export default Creators;
 
 /* ------------- Initial State ------------- */
