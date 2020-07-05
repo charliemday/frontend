@@ -9,18 +9,10 @@ const createCustomActions = (prefix, request, success, failure) => {
   return action;
 };
 
-const createCustomTypes = (prefix, types) => {
-  const type = {};
-  type[`[${types}.${prefix.toUpperCase()}_REQUEST]`] = `${prefix}Request`;
-  type[`[${types}.${prefix.toUpperCase()}_SUCCESS]`] = `${prefix}Success`;
-  type[`[${types}.${prefix.toUpperCase()}_FAILURE]`] = `${prefix}Failure`;
-  return type;
-};
-
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  ...createCustomActions('login', ['data'], ['payload'], ['error']),
+  ...createCustomActions('login', ['data', 'callback'], ['payload'], ['error']),
 });
 
 export const AuthenticationTypes = Types;
@@ -34,19 +26,25 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-export const loginRequest = (state, { payload }) =>
-  state.merge({
-    fetching: true,
+export const loginRequest = (state, { payload }) => state.merge({});
+
+export const loginSuccess = (state, { payload }) => {
+  return state.merge({
+    token: payload.token,
   });
+};
 
-export const loginSuccess = (state, action) => state.merge({});
-
-export const loginFailure = (state, { payload }) => state.merge({});
+export const loginFailure = (state, { payload }) =>
+  state.merge({
+    error: true,
+  });
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  ...createCustomTypes('login', Types),
+  LOGIN_REQUEST: loginRequest,
+  LOGIN_SUCCESS: loginSuccess,
+  LOGIN_FAILURE: loginFailure,
 });
 
 /* ------------- Selectors ------------- */

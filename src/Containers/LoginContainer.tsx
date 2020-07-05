@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 import AuthenticationActions from 'Redux/AuthenticationRedux';
+import Routes from 'Navigation/Routes';
 
 const Container = styled.div`
   padding: 40px;
@@ -13,30 +14,47 @@ const Container = styled.div`
 `;
 
 interface Props {
-  loginRequest: (arg0: object) => void;
+  loginRequest: (arg0: object, arg1: object) => void;
+  history: any;
 }
 
-class LoginContainer extends Component<Props> {
-  state = {};
+interface State {
+  error: boolean;
+}
 
-  handleSubmit = (values: any) => this.props.loginRequest(values);
+class LoginContainer extends Component<Props, State> {
+  state = {
+    error: false,
+  };
+
+  loginCallback = () => {
+    return {
+      onSuccess: () => this.props.history.push(Routes.feed),
+      onFailure: () => this.setState({ error: true }),
+    };
+  };
+
+  handleSubmit = (values: any) =>
+    this.props.loginRequest(values, this.loginCallback());
 
   render() {
     return (
       <Container>
         <h1>Login</h1>
-        <LoginForm onSubmit={this.handleSubmit} />
+        <LoginForm onSubmit={this.handleSubmit} error={this.state.error} />
       </Container>
     );
   }
 }
 
-const mapStateToProps = () => {};
+const mapStateToProps = (state: any) => {
+  return {};
+};
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    loginRequest: (data: object) =>
-      dispatch(AuthenticationActions.loginRequest(data)),
+    loginRequest: (data: object, callback: object) =>
+      dispatch(AuthenticationActions.loginRequest(data, callback)),
   };
 };
 

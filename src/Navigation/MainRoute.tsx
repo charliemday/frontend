@@ -18,8 +18,8 @@ class MainRoute extends Component {
         <Route path={routes.base} component={Navbar} />
         <Switch>
           <Route path={routes.login} component={LoginContainer} />
-          <Route path={routes.feed} component={FeedContainer} />
           <Route path={routes.signup} component={SignupContainer} />
+          <Route path={routes.feed} component={FeedContainer} />
           <Route exact path={routes.item} component={ItemContainer} />
         </Switch>
       </Router>

@@ -5,15 +5,19 @@ import styled from 'styled-components';
 
 interface Props {
   onSubmit: Function;
+  error: boolean;
 }
 
 const ErrorContainer = styled.div`
   color: red;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 const LoginForm = (props: Props) => {
   const { handleSubmit, register, errors } = useForm();
   const onSubmit = (values: any) => props.onSubmit(values);
+  const { error } = props;
 
   return (
     <>
@@ -46,6 +50,8 @@ const LoginForm = (props: Props) => {
         <ErrorContainer>
           {errors.password && errors.password.message}
         </ErrorContainer>
+
+        {error && <ErrorContainer>Invalid credentials</ErrorContainer>}
 
         <Button variant='primary' type='submit'>
           Login
