@@ -2,13 +2,22 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, Button } from 'react-bootstrap';
 import styled from 'styled-components';
+import { FooterContainer } from 'Forms/SignupForm';
+import { Link } from 'react-router-dom';
+import routes from 'Navigation/Routes';
 
 interface Props {
   onSubmit: Function;
   error: boolean;
 }
 
-const ErrorContainer = styled.div`
+export const SuccessContainer = styled.div`
+  color: green;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+export const ErrorContainer = styled.div`
   color: red;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -23,7 +32,6 @@ const LoginForm = (props: Props) => {
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group controlId='formBasicEmail'>
-          <Form.Label>Email address</Form.Label>
           <Form.Control
             placeholder='Enter username'
             name='username'
@@ -36,7 +44,6 @@ const LoginForm = (props: Props) => {
         <ErrorContainer>{errors.email && errors.email.message}</ErrorContainer>
 
         <Form.Group controlId='formBasicPassword'>
-          <Form.Label>Password</Form.Label>
           <Form.Control
             type='password'
             placeholder='Password'
@@ -53,9 +60,14 @@ const LoginForm = (props: Props) => {
 
         {error && <ErrorContainer>Invalid credentials</ErrorContainer>}
 
-        <Button variant='primary' type='submit'>
-          Login
-        </Button>
+        <FooterContainer>
+          <Link to={routes.signup} style={{ marginRight: 20 }}>
+            Haven't got a login?
+          </Link>
+          <Button variant='primary' type='submit'>
+            Login
+          </Button>
+        </FooterContainer>
       </Form>
     </>
   );

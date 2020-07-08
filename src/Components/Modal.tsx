@@ -6,16 +6,27 @@ import { AiOutlineLike } from 'react-icons/ai';
 interface Props {
   show: boolean;
   close: () => void;
+  id?: number | null;
   title: string;
   description: string;
   children?: React.ReactNode;
   likeButtons?: boolean;
+  onLike?: () => void;
+  likes?: number;
 }
 
 const ButtonsContainer = styled.div`
   display: flex;
   flex: 1;
   justify-content: flex-start;
+`;
+
+const LikesContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justiyf-content: center;
+  padding-right: 10px;
+  padding-left: 10px;
 `;
 
 class CustomModal extends Component<Props> {
@@ -27,7 +38,10 @@ class CustomModal extends Component<Props> {
       title,
       description,
       children,
+      id = null,
+      onLike = () => {},
       likeButtons = false,
+      likes = 0,
     } = this.props;
     return (
       <Modal show={show} onHide={close}>
@@ -36,14 +50,16 @@ class CustomModal extends Component<Props> {
         </Modal.Header>
         <Modal.Body>{children ? children : <p>{description}</p>}</Modal.Body>
         <Modal.Footer>
-          {likeButtons && (
+          {likeButtons && id && (
             <ButtonsContainer>
-              <AiOutlineLike fontSize={32} cursor='pointer' />
+              <LikesContainer>{likes}</LikesContainer>
+              <AiOutlineLike
+                fontSize={32}
+                cursor='pointer'
+                onClick={() => onLike()}
+              />
             </ButtonsContainer>
           )}
-          <Button variant='secondary' onClick={close}>
-            Close
-          </Button>
         </Modal.Footer>
       </Modal>
     );

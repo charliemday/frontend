@@ -1,17 +1,12 @@
 import React, { Component, Dispatch } from 'react';
-import LoginForm from 'Forms/LoginForm';
-import styled from 'styled-components';
-
 import { connect } from 'react-redux';
 
 import AuthenticationActions from 'Redux/AuthenticationRedux';
 import Routes from 'Navigation/Routes';
 
-const Container = styled.div`
-  padding: 40px;
-  width: 50%;
-  margin: auto;
-`;
+import LoginForm from 'Forms/LoginForm';
+
+import { Container, Header } from 'Containers/SignupContainer';
 
 interface Props {
   loginRequest: (arg0: object, arg1: object) => void;
@@ -40,7 +35,7 @@ class LoginContainer extends Component<Props, State> {
   render() {
     return (
       <Container>
-        <h1>Login</h1>
+        <Header>Login</Header>
         <LoginForm onSubmit={this.handleSubmit} error={this.state.error} />
       </Container>
     );

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 import ItemDetail from 'Components/ItemDetail';
 import AddItemDetail from 'Components/AddItemDetail';
@@ -7,25 +8,12 @@ import Avatar from 'Components/Avatar';
 import Modal from 'Components/Modal';
 
 import NewTransactionForm, { FormData } from 'Forms/NewTransactionForm';
-
+import TransactionActions, {
+  TransactionSelectors,
+} from 'Redux/TransactionRedux';
+import { AuthenticationSelectors } from 'Redux/AuthenticationRedux';
 import { avatarSrc } from 'Constants';
-
-const data = [
-  {
-    from: 0.01,
-    to: 0.02,
-    currency: '£',
-    title: 'Lorum Ipsum',
-    description: 'Lorum ipsum...',
-  },
-  {
-    from: 1.23,
-    to: 1.24,
-    currency: '£',
-    title: 'Lorum Ipsum',
-    description: 'Lorum ipsum...',
-  },
-];
+import { GlobalState } from 'Redux/types';
 
 const Container = styled.div`
   margin-top: 20px;
@@ -49,21 +37,42 @@ const ProfileInfoContainer = styled.div`
   align-items: center;
 `;
 
-interface Props {}
+interface Props {
+  createTransaction: (
+    arg0: FormData,
+    callback: { onSuccess: Function; onFailure: Function }
+  ) => {};
+  getTransactions: (arg0: string, agr1: any) => void;
+  transactions: any;
+  likeTransaction: (arg0: number, arg1: any) => void;
+}
 
 interface State {
   showModal: boolean;
   showAddModal: boolean;
-  title: string;
-  description: string;
+  addTransactionSuccess: boolean;
+  addTransactionError: boolean;
+  transactionItem: object;
 }
 
 class ItemContainer extends Component<Props, State> {
   state = {
     showModal: false,
-    title: '',
-    description: '',
     showAddModal: false,
+    addTransactionSuccess: false,
+    addTransactionError: false,
+    transactionItem: {
+      id: null,
+      currency: null,
+      startSale: 0,
+      endSale: 0,
+      likes: 0,
+      description: '',
+    },
+  };
+
+  componentDidMount = async () => {
+    await this.props.getTransactions('1', {});
   };
 
   handleAddTransaction = () => {
@@ -72,19 +81,58 @@ class ItemContainer extends Component<Props, State> {
     });
   };
 
-  // TODO: Add this to the API
-  handleSubmit = (values: FormData) => console.log('Values', values);
+  handleSubmitCallback = () => {
+    return {
+      onSuccess: () => this.setState({ addTransactionSuccess: true }),
+      onFailure: () => this.setState({ addTransactionError: true }),
+    };
+  };
+
+  handleSubmit = async (values: FormData) => {
+    const { createTransaction } = this.props;
+    await createTransaction(values, this.handleSubmitCallback());
+  };
 
   renderAddModal = () => {
+    const { addTransactionSuccess, addTransactionError } = this.state;
     return (
       <AddModalContainer>
-        <NewTransactionForm onSubmit={this.handleSubmit} />
+        <NewTransactionForm
+          onSubmit={this.handleSubmit}
+          success={addTransactionSuccess}
+          error={addTransactionError}
+        />
       </AddModalContainer>
     );
   };
 
+  handleLike = async (id: any) => {
+    const callback = {
+      onSuccess: () => {},
+      onFailure: () => {},
+    };
+    await this.props.likeTransaction(id, callback);
+  };
+
+  renderModal = () => {
+    const { showModal, transactionItem } = this.state;
+    if (transactionItem === null) return null;
+    return (
+      <Modal
+        id={transactionItem.id}
+        show={showModal}
+        close={() => this.setState({ showModal: false })}
+        title={`${transactionItem.currency}${transactionItem.startSale} to ${transactionItem.currency}${transactionItem.endSale}`}
+        description={transactionItem.description}
+        likeButtons={true}
+        onLike={() => this.handleLike(transactionItem.id)}
+        likes={transactionItem.likes}
+      />
+    );
+  };
+
   render() {
-    const { showModal, description, title, showAddModal } = this.state;
+    const { showAddModal } = this.state;
     const name = 'Barack Obama';
     return (
       <Container>
@@ -96,13 +144,7 @@ class ItemContainer extends Component<Props, State> {
         >
           {this.renderAddModal()}
         </Modal>
-        <Modal
-          show={showModal}
-          close={() => this.setState({ showModal: false })}
-          title={title}
-          description={description}
-          likeButtons={true}
-        ></Modal>
+        {this.renderModal()}
         <ProfileInfoContainer>
           <AvatarContainer>
             <Avatar src={avatarSrc} />
@@ -111,20 +153,20 @@ class ItemContainer extends Component<Props, State> {
         </ProfileInfoContainer>
         <AddItemDetail onClick={this.handleAddTransaction} />
         <ItemDetailContainer>
-          {data.map((item, key) => (
-            <ItemDetail
-              key={key}
-              from={item.from}
-              to={item.to}
-              currency={item.currency}
-              onClick={() =>
-                this.setState({
-                  showModal: true,
-                  title: item.title,
-                  description: item.description,
-                })
-              }
-            />
+          {this.props.transactions.map((item: any, key: string) => (
+            <React.Fragment key={key}>
+              <ItemDetail
+                from={item.startSale}
+                to={item.endSale}
+                currency={item.currency}
+                onClick={() =>
+                  this.setState({
+                    showModal: true,
+                    transactionItem: item,
+                  })
+                }
+              />
+            </React.Fragment>
           ))}
         </ItemDetailContainer>
       </Container>
@@ -132,4 +174,22 @@ class ItemContainer extends Component<Props, State> {
   }
 }
 
-export default ItemContainer;
+const mapStateToProps = (state: GlobalState) => {
+  return {
+    transactions: TransactionSelectors.getTransactions(state),
+    // isLoggedIn: AuthenticationSelectors.getIsLoggedIn(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    createTransaction: (data: FormData, callback: any) =>
+      dispatch(TransactionActions.createTransactionRequest(data, callback)),
+    getTransactions: (data: string, callback: any) =>
+      dispatch(TransactionActions.getTransactionsRequest(data, callback)),
+    likeTransaction: (data: number, callback: any) =>
+      dispatch(TransactionActions.likeTransactionRequest(data, callback)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemContainer);

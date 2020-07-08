@@ -1,0 +1,110 @@
+{
+  // Place your frontend workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"scope": "javascript,typescript",
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+  "For Loop": {
+    "prefix": ["for", "for-const"],
+    "body": ["for (const ${2:element} of ${1:array}) {", "\t$0", "}"],
+    "description": "A for loop."
+  },
+
+  "Create Reducers": {
+    "prefix": ["create-reducers"],
+    "body": [
+      "export const ${1:name}Request = (state: ${2:type}, action) => { return state; }",
+      "",
+      "export const ${1:name}Success = (state: ${2:type}, action) => { return state; }",
+      "",
+      "export const ${1:name}Failure = (state: ${2:type}, action) => { return state; }",
+      ""
+    ],
+    "description": "A simple set of reducers"
+  },
+
+  "Hookup Reducers": {
+    "prefix": ["create-reducer-hookup"],
+    "body": [
+      "",
+      "[Types.${1:action}_REQUEST]: ${2:function}Request,",
+      "[Types.${1:action}_SUCCESS]: ${2:function}Success,",
+      "[Types.${1:action}_FAILURE]: ${2:function}Failure",
+      ""
+    ],
+    "description": "Hookup reducers to action types"
+  },
+
+  "Create Saga (Worker)": {
+    "prefix": ["create-worker"],
+    "body": [
+      "export function* ${1:sagaName}Saga(api: any, action: any) {",
+      "  const response = yield call(api.${1:sagaName}, action.data);",
+      "  if (response.ok) {",
+      "    action.callback.onSuccess();",
+      "    yield put(${2:action}Actions.${1:sagaName}Success(response.data));",
+      "  } else {",
+      "    action.callback.onFailure();",
+      "    yield put(${2:action}Actions.${1:sagaName}Failure(response.data));",
+      "  }",
+      "}"
+    ],
+    "description": "Create a saga"
+  },
+
+  "Create Component Types": {
+    "prefix": ["create-types"],
+    "body": ["interface Props {}", "", "interface State {}"]
+  },
+
+  "Create Post API": {
+    "prefix": ["create-api-post"],
+    "body": [
+      "const ${1:name} = (token, data) => {",
+      "  return api.post(${2:url}, {",
+      "    ...data",
+      "    });",
+      "}"
+    ]
+  },
+
+  "Connect Redux to React": {
+    "prefix": "msp-mdp",
+    "body": [
+      "const mapStateToProps = (state: any) => {",
+      " return {}",
+      "}",
+      "",
+      "const mapDispatchToProps = (dispatch: any) => {",
+      " return {}",
+      "}",
+      ""
+    ]
+  },
+
+  "Create Saga (Watcher)": {
+    "prefix": "create-watcher",
+    "body": ["takeLatest(${1:types}.${2:type}_REQUEST, ${3:saga}, api)"]
+  },
+
+  "Create Callback Function": {
+    "prefix": "create-callback",
+    "body": [
+      "${1:prefix}Callback = () => ({",
+      "   onSuccess: () => console.log('Success'),",
+      "   onFailure: () => console.log('Failure'),",
+      "})"
+    ]
+  }
+}

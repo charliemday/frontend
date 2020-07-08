@@ -1,9 +1,13 @@
+import { Button, Form, Nav, Navbar } from 'react-bootstrap';
 import React, { Component } from 'react';
-import { Navbar, Nav, Button, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 
+import AuthenticationActions, {
+  AuthenticationSelectors,
+} from 'Redux/AuthenticationRedux';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { connect } from 'react-redux';
 import routes from 'Navigation/Routes';
+import styled from 'styled-components';
 
 const ButtonContainer = styled.div`
   margin-left: 20px;
@@ -13,32 +17,69 @@ const NavLink = styled(Link)`
   padding: 10px;
 `;
 
-class CustomNavbar extends Component {
+interface Props extends RouteComponentProps {
+  token: string | null;
+  logout: () => void;
+}
+
+interface State {}
+
+class CustomNavbar extends Component<Props, State> {
   state = {};
+
+  logout = async () => {
+    const { logout, history } = this.props;
+    await logout();
+    history.push(routes.base);
+  };
+
   render() {
+    const { token } = this.props;
     return (
       <Navbar bg='light' variant='light'>
-        <Navbar.Brand href='#home'>Navbar</Navbar.Brand>
+        <Link to={routes.base}>1to1000</Link>
         <Nav className='mr-auto'>
           <NavLink to={routes.home}>Home</NavLink>
           <NavLink to={routes.feed}>Feed</NavLink>
         </Nav>
         <Form inline>
-          <ButtonContainer>
-            <Button variant='outline-info'>
-              <Link to={routes.login}>Login</Link>
-            </Button>
-          </ButtonContainer>
-          <ButtonContainer>
-            <Button variant='outline-info'>
-              {' '}
-              <Link to={routes.signup}>Signup</Link>
-            </Button>
-          </ButtonContainer>
+          {!token ? (
+            <>
+              <ButtonContainer>
+                <Button variant='outline-info'>
+                  <Link to={routes.login}>Login</Link>
+                </Button>
+              </ButtonContainer>
+              <ButtonContainer>
+                <Button variant='outline-info'>
+                  {' '}
+                  <Link to={routes.signup}>Signup</Link>
+                </Button>
+              </ButtonContainer>
+            </>
+          ) : (
+            <ButtonContainer>
+              <Button variant='outline-info' onClick={this.logout}>
+                Logout
+              </Button>
+            </ButtonContainer>
+          )}
         </Form>
       </Navbar>
     );
   }
 }
 
-export default CustomNavbar;
+const mapStateToProps = (state: any) => {
+  return {
+    token: AuthenticationSelectors.getToken(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    logout: () => dispatch(AuthenticationActions.logout()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomNavbar);
