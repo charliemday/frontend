@@ -2,7 +2,6 @@ import React, { Component, Dispatch } from 'react';
 import { connect } from 'react-redux';
 
 import AuthenticationActions from 'Redux/AuthenticationRedux';
-import Routes from 'Navigation/Routes';
 
 import LoginForm from 'Forms/LoginForm';
 
