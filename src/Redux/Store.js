@@ -26,7 +26,6 @@ const resettable = resettableReducer('LOGOUT');
 const rootReducer = combineReducers({
   router: connectRouter(history),
   authentication: resettable(require('./AuthenticationRedux').reducer),
-  transaction: resettable(require('./TransactionRedux').reducer),
 });
 
 // This enables our state to be peristed when the user leaves the webpage

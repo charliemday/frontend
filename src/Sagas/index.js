@@ -3,5 +3,5 @@ import authRoot from './AuthenticationSagas/watchers';
 import transactionRoot from './TransactionSagas/watchers';
 
 export default function* rootSaga() {
-  yield all([authRoot(), transactionRoot()]);
+  yield all([authRoot()]);
 }

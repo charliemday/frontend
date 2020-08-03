@@ -24,7 +24,7 @@ class LoginContainer extends Component<Props, State> {
 
   loginCallback = () => {
     return {
-      onSuccess: () => this.props.history.push(Routes.feed),
+      onSuccess: () => console.log('Login Success!'),
       onFailure: () => this.setState({ error: true }),
     };
   };

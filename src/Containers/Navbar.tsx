@@ -37,10 +37,8 @@ class CustomNavbar extends Component<Props, State> {
     const { token } = this.props;
     return (
       <Navbar bg='light' variant='light'>
-        <Link to={routes.base}>1to1000</Link>
         <Nav className='mr-auto'>
           <NavLink to={routes.home}>Home</NavLink>
-          <NavLink to={routes.feed}>Feed</NavLink>
         </Nav>
         <Form inline>
           {!token ? (
