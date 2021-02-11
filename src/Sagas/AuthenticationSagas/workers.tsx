@@ -1,21 +1,12 @@
 import AuthenticationActions, {
   AuthenticationSelectors,
-} from 'Redux/AuthenticationRedux';
-import { call, put, select } from 'redux-saga/effects';
-import AuthenticationApi from 'Services/Api';
-
-// const camelizeKeys = require('camelcase-keys');
-// const decamelizeKeysDeep = require('decamelize-keys-deep');
+} from "Redux/AuthenticationRedux";
+import { call, put, select } from "redux-saga/effects";
+import AuthenticationApi from "Services/Api";
 
 const authApi = AuthenticationApi.create();
 
-export function* loginSaga(
-  api: object,
-  action: {
-    data: { username: string; password: string };
-    callback: { onSuccess: Function; onFailure: Function };
-  }
-) {
+export function* loginSaga(api: any, action: any) {
   const { data } = action;
   const response = yield call(authApi.login, data);
   if (response.status === 200) {
@@ -27,13 +18,7 @@ export function* loginSaga(
   }
 }
 
-export function* signupSaga(
-  api: any,
-  action: {
-    data: { username: string; password: string };
-    callback: { onSuccess: Function; onFailure: Function };
-  }
-) {
+export function* signupSaga(api: any, action: any) {
   const response = yield call(api.signup, action.data);
   if (response.ok) {
     yield put(AuthenticationActions.signupSuccess(response.data));
@@ -47,7 +32,6 @@ export function* signupSaga(
 export function* getUserDetailsSaga(api: any, action: any) {
   const token = yield select(AuthenticationSelectors.getToken);
   const response = yield call(api.getUserDetails, token);
-  console.log('Action', action);
   if (response.ok) {
     action.callback.onSuccess();
     yield put(AuthenticationActions.getUserDetailsSuccess(response.data));

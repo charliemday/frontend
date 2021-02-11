@@ -1,7 +1,7 @@
-import { createActions, createReducer } from 'reduxsauce';
-import Immutable from 'seamless-immutable';
+import { createActions, createReducer } from "reduxsauce";
+import Immutable from "seamless-immutable";
 
-import { GlobalState, AuthenticationState } from 'Redux/types';
+import { GlobalState, AuthenticationState } from "Redux/types";
 
 const createCustomActions = (
   prefix: string,
@@ -19,18 +19,18 @@ const createCustomActions = (
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  ...createCustomActions('login', ['data', 'callback'], ['payload'], ['error']),
+  ...createCustomActions("login", ["data", "callback"], ["payload"], ["error"]),
   ...createCustomActions(
-    'signup',
-    ['data', 'callback'],
-    ['payload'],
-    ['error']
+    "signup",
+    ["data", "callback"],
+    ["payload"],
+    ["error"]
   ),
   ...createCustomActions(
-    'getUserDetails',
-    ['callback'],
-    ['payload'],
-    ['error']
+    "getUserDetails",
+    ["callback"],
+    ["payload"],
+    ["error"]
   ),
   logout: [],
 });
@@ -40,27 +40,28 @@ export default Creators;
 
 /* ------------- Initial State ------------- */
 
-export const INITIAL_STATE = Immutable({
+export const INITIAL_STATE: AuthenticationState = Immutable({
   fetching: false,
   token: null,
 });
 
 /* ------------- Reducers ------------- */
 
-export const loginRequest = (state: AuthenticationState, { payload }: any) => {
+export const loginRequest = (state: AuthenticationState, action: any) => {
   return {
     ...state,
   };
 };
 
-export const loginSuccess = (state: AuthenticationState, { payload }: any) => {
+export const loginSuccess = (state: AuthenticationState, action: any) => {
+  const { payload } = action;
   return {
     ...state,
     token: payload.token,
   };
 };
 
-export const loginFailure = (state: AuthenticationState, { payload }: any) => ({
+export const loginFailure = (state: AuthenticationState, action: any) => ({
   ...state,
   error: true,
 });
@@ -109,7 +110,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGIN_REQUEST]: loginRequest,
   [Types.LOGIN_SUCCESS]: loginSuccess,
   [Types.LOGIN_FAILURE]: loginFailure,
-  [Types.LOGOUT]: logout,
 
   [Types.SIGNUP_REQUEST]: signupRequest,
   [Types.SIGNUP_SUCCESS]: signupSuccess,
@@ -118,6 +118,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_USER_DETAILS_REQUEST]: getUserDetailsRequest,
   [Types.GET_USER_DETAILS_SUCCESS]: getUserDetailsSuccess,
   [Types.GET_USER_DETAILS_FAILURE]: getUserDetailsFailure,
+
+  [Types.LOGOUT]: logout,
 });
 
 /* ------------- Selectors ------------- */
